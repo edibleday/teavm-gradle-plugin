@@ -1,0 +1,32 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.edibleday:teavm-gradle-plugin:0.3.1.+"
+    }
+}
+
+group 'com.test'
+version '1.0-SNAPSHOT'
+
+apply plugin: "com.edibleday.teavm"
+
+sourceCompatibility = JavaVersion.VERSION_1_6
+mainClassName = "Main"
+
+repositories {
+    mavenCentral()
+}
+
+teavmc {
+    installDirectory "${project.buildDir}/teavm"
+    targetFileName "app.js"
+    mainPageIncluded true
+    copySources false
+    generateSourceMap false
+    minified true
+    runtime org.teavm.tooling.RuntimeCopyOperation.SEPARATE
+}
