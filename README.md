@@ -3,6 +3,8 @@ About
 
 This is Gradle plugin for compiling(transpiling) Java bytecode to JavaScript using [TeaVM](http://teavm.org/). Plugin uses TeaVMTool for compilation. Plugin is written in [Kotlin](http://kotlinlang.org/) and depends on `kotlin-stdlib`. Project that uses plugin will depend on `teavm-classlib`, `teavm-jso` and `teavm-dom`. All dependencies can be acquired from Maven Central repo.
 
+Plugin is tested with Java 6 and Kotlin but it should be able to transpile other JVM outputs too.
+
 Building
 ========
 
