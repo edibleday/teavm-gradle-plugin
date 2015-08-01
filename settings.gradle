@@ -1,0 +1,3 @@
+rootProject.name = 'teavm'
+include ":teavm-gradle-plugin"
+
