@@ -1,0 +1,8 @@
+# Gradle ignores
+build/
+.gradle/
+
+# Idea ignores
+.idea/
+*.iml
+
