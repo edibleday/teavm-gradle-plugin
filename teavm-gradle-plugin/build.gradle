@@ -12,7 +12,7 @@ apply plugin: 'kotlin'
 apply plugin: 'maven-publish'
 
 sourceCompatibility = JavaVersion.VERSION_1_6
-version = '0.3.1.0'
+version = '0.3.2.0'
 group = "com.edibleday"
 
 repositories {
@@ -22,7 +22,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile "org.teavm:teavm-core:0.3.1"
+    compile "org.teavm:teavm-core:0.3.2"
     compile "org.jetbrains.kotlin:kotlin-stdlib:0.12.613"
 }
 
