@@ -26,6 +26,7 @@ import org.teavm.tooling.JarSourceFileProvider
 import org.teavm.tooling.RuntimeCopyOperation
 import org.teavm.tooling.TeaVMTool
 import java.io.File
+import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 import java.net.URLClassLoader
@@ -95,13 +96,21 @@ public open class TeaVMTask : DefaultTask() {
         tool.setSourceFilesCopied(copySources)
         tool.setSourceMapsFileGenerated(generateSourceMap)
 
-        tool.setClassLoader(prepareClassLoader())
-        tool.generate()
+        val classLoader = prepareClassLoader()
+        try {
+            tool.setClassLoader(classLoader)
+            tool.generate()
+        } finally {
+            try {
+                classLoader.close()
+            } catch (ignored: IOException) {
+            }
+        }
 
     }
 
 
-    private fun prepareClassLoader(): ClassLoader {
+    private fun prepareClassLoader(): URLClassLoader {
         try {
             val urls = ArrayList<URL>()
             val classpath = StringBuilder()
