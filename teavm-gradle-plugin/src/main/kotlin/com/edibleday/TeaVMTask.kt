@@ -58,7 +58,7 @@ public open class TeaVMTask : DefaultTask() {
         } else throw TeaVMException("mainClassName not found!")
 
 
-        val addSrc = { f: File ->
+        val addSrc = { f: File, tool: TeaVMTool ->
             if (f.isFile()) {
                 if (f.getAbsolutePath().endsWith(".jar")) {
                     tool.addSourceFileProvider(JarSourceFileProvider(f))
@@ -78,13 +78,13 @@ public open class TeaVMTask : DefaultTask() {
                 .getSourceSets()
                 .getByName(SourceSet.MAIN_SOURCE_SET_NAME)
                 .getAllSource()
-                .getSrcDirs().forEach (addSrc)
+                .getSrcDirs().forEach { addSrc(it, tool) }
 
         project
                 .getConfigurations()
                 .getByName("teavmsources")
                 .getFiles()
-                .forEach (addSrc)
+                .forEach { addSrc(it, tool) }
 
         val cacheDirectory = File(project.getBuildDir(), "teavm-cache")
         cacheDirectory.mkdirs()
