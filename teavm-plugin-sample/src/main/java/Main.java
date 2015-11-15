@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import org.teavm.dom.browser.Window;
-import org.teavm.jso.JS;
+import org.teavm.jso.browser.Window;
 
 public class Main
 {
 	public static void main(String[] args)
 	{
-		final Window window = ((Window) JS.getGlobal());
+		final Window window = Window.current();
 		window.alert("Hello from TeaVM!");
 	}
 }

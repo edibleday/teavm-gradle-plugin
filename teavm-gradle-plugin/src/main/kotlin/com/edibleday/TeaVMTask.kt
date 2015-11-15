@@ -21,8 +21,8 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskAction
-import org.teavm.tooling.DirectorySourceFileProvider
-import org.teavm.tooling.JarSourceFileProvider
+import org.teavm.tooling.sources.DirectorySourceFileProvider
+import org.teavm.tooling.sources.JarSourceFileProvider
 import org.teavm.tooling.RuntimeCopyOperation
 import org.teavm.tooling.TeaVMTool
 import java.io.File
