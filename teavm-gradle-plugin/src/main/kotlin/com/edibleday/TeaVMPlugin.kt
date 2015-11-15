@@ -47,7 +47,7 @@ public class TeaVMPlugin : Plugin<Project> {
 
 
         project.task(mapOf(
-                Task.TASK_TYPE to javaClass<TeaVMTask>(),
+                Task.TASK_TYPE to TeaVMTask::class.java,
                 Task.TASK_DEPENDS_ON to "build",
                 Task.TASK_DESCRIPTION to "TeaVM Compile",
                 Task.TASK_GROUP to "build"

@@ -31,8 +31,6 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.ArrayList
-import kotlin.properties.Delegates
-
 
 public open class TeaVMTask : DefaultTask() {
 
@@ -44,9 +42,9 @@ public open class TeaVMTask : DefaultTask() {
     public var minified: Boolean = true
     public var runtime: RuntimeCopyOperation = RuntimeCopyOperation.SEPARATE
 
-    val log by Delegates.lazy { TeaVMLoggerGlue(getProject().getLogger()) }
+    val log by lazy { TeaVMLoggerGlue(getProject().getLogger()) }
 
-    TaskAction public fun compTeaVM() {
+    @TaskAction public fun compTeaVM() {
         val tool = TeaVMTool()
         val project = getProject()
 
@@ -73,7 +71,7 @@ public open class TeaVMTask : DefaultTask() {
         }
 
 
-        val convention = project.getConvention().getPlugin(javaClass<JavaPluginConvention>())
+        val convention = project.getConvention().getPlugin(JavaPluginConvention::class.java)
 
         convention
                 .getSourceSets()
@@ -115,14 +113,14 @@ public open class TeaVMTask : DefaultTask() {
             val urls = ArrayList<URL>()
             val classpath = StringBuilder()
             for (file in getProject().getConfigurations().getByName("runtime").getFiles()) {
-                if (classpath.length() > 0) {
+                if (classpath.length > 0) {
                     classpath.append(':')
                 }
                 classpath.append(file.getPath())
                 urls.add(file.toURI().toURL())
             }
 
-            if (classpath.length() > 0) {
+            if (classpath.length > 0) {
                 classpath.append(':')
             }
             classpath.append(File(getProject().getBuildDir(), "classes/main").getPath())
@@ -131,7 +129,7 @@ public open class TeaVMTask : DefaultTask() {
             classpath.append(File(getProject().getBuildDir(), "resources/main").getPath())
             urls.add(File(getProject().getBuildDir(), "resources/main").toURI().toURL())
 
-            return URLClassLoader(urls.toArray<URL>(arrayOfNulls<URL>(urls.size())), javaClass.getClassLoader())
+            return URLClassLoader(urls.toArray<URL>(arrayOfNulls<URL>(urls.size)), javaClass.getClassLoader())
         } catch (e: MalformedURLException) {
             throw MojoExecutionException("Error gathering classpath information", e)
         }
