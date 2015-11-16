@@ -21,7 +21,7 @@ import org.gradle.api.Task
 
 public class TeaVMPlugin : Plugin<Project> {
 
-    val version = "0.3.2"
+    val version = "0.4.0"
 
     override fun apply(project: Project) {
 
@@ -38,16 +38,16 @@ public class TeaVMPlugin : Plugin<Project> {
         project.getDependencies().let {
             it.add("compile", "org.teavm:teavm-classlib:$version")
             it.add("compile", "org.teavm:teavm-jso:$version")
-            it.add("compile", "org.teavm:teavm-dom:$version")
+            it.add("compile", "org.teavm:teavm-jso-apis:$version")
             it.add("teavmsources", "org.teavm:teavm-platform:$version:sources")
             it.add("teavmsources", "org.teavm:teavm-classlib:$version:sources")
             it.add("teavmsources", "org.teavm:teavm-jso:$version:sources")
-            it.add("teavmsources", "org.teavm:teavm-dom:$version:sources")
+            it.add("teavmsources", "org.teavm:teavm-jso-apis:$version:sources")
         }
 
 
         project.task(mapOf(
-                Task.TASK_TYPE to javaClass<TeaVMTask>(),
+                Task.TASK_TYPE to TeaVMTask::class.java,
                 Task.TASK_DEPENDS_ON to "build",
                 Task.TASK_DESCRIPTION to "TeaVM Compile",
                 Task.TASK_GROUP to "build"
