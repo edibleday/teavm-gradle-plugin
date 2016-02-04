@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.edibleday:teavm-gradle-plugin:0.4.1.+" //Depend on plugin
+        classpath "com.edibleday:teavm-gradle-plugin:0.4.3.+" //Depend on plugin
     }
 }
 
