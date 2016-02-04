@@ -20,7 +20,6 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		final Window window = Window.current();
-		window.alert("Hello from TeaVM!");
+		Window.alert("Hello from TeaVM!");
 	}
 }

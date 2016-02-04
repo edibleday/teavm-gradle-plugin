@@ -17,4 +17,4 @@
 package com.edibleday
 
 
-public class TeaVMException(msg: String) : Exception(msg)
+class TeaVMException(msg: String) : Exception(msg)

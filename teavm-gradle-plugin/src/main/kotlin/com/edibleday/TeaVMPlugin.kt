@@ -19,9 +19,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 
-public class TeaVMPlugin : Plugin<Project> {
+class TeaVMPlugin : Plugin<Project> {
 
-    val version = "0.4.0"
+    val version = "0.4.1"
 
     override fun apply(project: Project) {
 
@@ -33,9 +33,9 @@ public class TeaVMPlugin : Plugin<Project> {
                 "plugin" to "application"
         ))
 
-        project.getConfigurations().create("teavmsources")
+        project.configurations.create("teavmsources")
 
-        project.getDependencies().let {
+        project.dependencies.let {
             it.add("compile", "org.teavm:teavm-classlib:$version")
             it.add("compile", "org.teavm:teavm-jso:$version")
             it.add("compile", "org.teavm:teavm-jso-apis:$version")

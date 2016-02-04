@@ -18,7 +18,7 @@ package com.edibleday
 import org.gradle.api.logging.Logger
 import org.teavm.tooling.TeaVMToolLog
 
-public class TeaVMLoggerGlue(val log: Logger) : TeaVMToolLog {
+class TeaVMLoggerGlue(val log: Logger) : TeaVMToolLog {
 
     override fun info(text: String) {
         log.info(text)

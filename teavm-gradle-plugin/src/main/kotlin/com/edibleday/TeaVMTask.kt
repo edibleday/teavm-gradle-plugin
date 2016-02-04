@@ -21,45 +21,45 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskAction
-import org.teavm.tooling.sources.DirectorySourceFileProvider
-import org.teavm.tooling.sources.JarSourceFileProvider
 import org.teavm.tooling.RuntimeCopyOperation
 import org.teavm.tooling.TeaVMTool
+import org.teavm.tooling.sources.DirectorySourceFileProvider
+import org.teavm.tooling.sources.JarSourceFileProvider
 import java.io.File
 import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 import java.net.URLClassLoader
-import java.util.ArrayList
+import java.util.*
 
-public open class TeaVMTask : DefaultTask() {
+open class TeaVMTask : DefaultTask() {
 
-    public var installDirectory: String = File(getProject().getBuildDir(), "teavm").getAbsolutePath()
-    public var targetFileName: String = "app.js"
-    public var mainPageIncluded: Boolean = true
-    public var copySources: Boolean = false
-    public var generateSourceMap: Boolean = false
-    public var minified: Boolean = true
-    public var runtime: RuntimeCopyOperation = RuntimeCopyOperation.SEPARATE
+    var installDirectory: String = File(project.buildDir, "teavm").absolutePath
+    var targetFileName: String = "app.js"
+    var mainPageIncluded: Boolean = true
+    var copySources: Boolean = false
+    var generateSourceMap: Boolean = false
+    var minified: Boolean = true
+    var runtime: RuntimeCopyOperation = RuntimeCopyOperation.SEPARATE
 
-    val log by lazy { TeaVMLoggerGlue(getProject().getLogger()) }
+    val log by lazy { TeaVMLoggerGlue(project.logger) }
 
-    @TaskAction public fun compTeaVM() {
+    @TaskAction fun compTeaVM() {
         val tool = TeaVMTool()
-        val project = getProject()
+        val project = project
 
-        tool.setTargetDirectory(File(installDirectory))
-        tool.setTargetFileName(targetFileName)
-        tool.setMainPageIncluded(mainPageIncluded)
+        tool.targetDirectory = File(installDirectory)
+        tool.targetFileName = targetFileName
+        tool.isMainPageIncluded = mainPageIncluded
 
         if (project.hasProperty("mainClassName") && project.property("mainClassName") != null) {
-            tool.setMainClass("${project.property("mainClassName")}")
+            tool.mainClass = "${project.property("mainClassName")}"
         } else throw TeaVMException("mainClassName not found!")
 
 
         val addSrc = { f: File, tool: TeaVMTool ->
-            if (f.isFile()) {
-                if (f.getAbsolutePath().endsWith(".jar")) {
+            if (f.isFile) {
+                if (f.absolutePath.endsWith(".jar")) {
                     tool.addSourceFileProvider(JarSourceFileProvider(f))
                 } else {
                     tool.addSourceFileProvider(DirectorySourceFileProvider(f))
@@ -71,32 +71,32 @@ public open class TeaVMTask : DefaultTask() {
         }
 
 
-        val convention = project.getConvention().getPlugin(JavaPluginConvention::class.java)
+        val convention = project.convention.getPlugin(JavaPluginConvention::class.java)
 
         convention
-                .getSourceSets()
+                .sourceSets
                 .getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-                .getAllSource()
-                .getSrcDirs().forEach { addSrc(it, tool) }
+                .allSource
+                .srcDirs.forEach { addSrc(it, tool) }
 
         project
-                .getConfigurations()
+                .configurations
                 .getByName("teavmsources")
-                .getFiles()
+                .files
                 .forEach { addSrc(it, tool) }
 
-        val cacheDirectory = File(project.getBuildDir(), "teavm-cache")
+        val cacheDirectory = File(project.buildDir, "teavm-cache")
         cacheDirectory.mkdirs()
-        tool.setCacheDirectory(cacheDirectory)
-        tool.setRuntime(runtime)
-        tool.setMinifying(minified)
-        tool.setLog(log)
-        tool.setSourceFilesCopied(copySources)
-        tool.setSourceMapsFileGenerated(generateSourceMap)
+        tool.cacheDirectory = cacheDirectory
+        tool.runtime = runtime
+        tool.isMinifying = minified
+        tool.log = log
+        tool.isSourceFilesCopied = copySources
+        tool.isSourceMapsFileGenerated = generateSourceMap
 
         val classLoader = prepareClassLoader()
         try {
-            tool.setClassLoader(classLoader)
+            tool.classLoader = classLoader
             tool.generate()
         } finally {
             try {
@@ -112,24 +112,24 @@ public open class TeaVMTask : DefaultTask() {
         try {
             val urls = ArrayList<URL>()
             val classpath = StringBuilder()
-            for (file in getProject().getConfigurations().getByName("runtime").getFiles()) {
+            for (file in project.configurations.getByName("runtime").files) {
                 if (classpath.length > 0) {
                     classpath.append(':')
                 }
-                classpath.append(file.getPath())
+                classpath.append(file.path)
                 urls.add(file.toURI().toURL())
             }
 
             if (classpath.length > 0) {
                 classpath.append(':')
             }
-            classpath.append(File(getProject().getBuildDir(), "classes/main").getPath())
-            urls.add(File(getProject().getBuildDir(), "classes/main").toURI().toURL())
+            classpath.append(File(project.buildDir, "classes/main").path)
+            urls.add(File(project.buildDir, "classes/main").toURI().toURL())
             classpath.append(':')
-            classpath.append(File(getProject().getBuildDir(), "resources/main").getPath())
-            urls.add(File(getProject().getBuildDir(), "resources/main").toURI().toURL())
+            classpath.append(File(project.buildDir, "resources/main").path)
+            urls.add(File(project.buildDir, "resources/main").toURI().toURL())
 
-            return URLClassLoader(urls.toArray<URL>(arrayOfNulls<URL>(urls.size)), javaClass.getClassLoader())
+            return URLClassLoader(urls.toArray<URL>(arrayOfNulls<URL>(urls.size)), javaClass.classLoader)
         } catch (e: MalformedURLException) {
             throw MojoExecutionException("Error gathering classpath information", e)
         }
