@@ -11,7 +11,7 @@ Building
 Use this command to build and publish plugin to local maven repo:
 
 ```
-./gradlew teavm-gradle-plugin:publishToMavenLocal
+./gradlew publishToMavenLocal
 ```
 
 Usage
