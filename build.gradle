@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.1-2'
     }
 }
 
@@ -26,19 +26,19 @@ dependencies {
     compile localGroovy()
     compile 'org.teavm:teavm-core:0.4.3'
     compile 'org.teavm:teavm-tooling:0.4.3'
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.0'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.1-2'
     compile 'org.apache.maven:maven-plugin-api:3.3.3'
 }
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
-    from "../AUTHORS"
-    from "../LICENCE"
+    from "AUTHORS"
+    from "LICENCE"
 }
 
 jar {
-    from "../AUTHORS"
-    from "../LICENCE"
+    from "AUTHORS"
+    from "LICENCE"
 }
 
 
