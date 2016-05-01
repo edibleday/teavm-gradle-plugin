@@ -10,10 +10,11 @@ Plugin is tested with Java 6 and Kotlin but it should be able to transpile other
 Quick Start
 ===========
 
-Add repository and classpath in build script:
+Add repositories and classpath in build script:
 ```
 buildscript {
     repositories {
+        mavenCentral()
         maven { url "https://jitpack.io" }
     }
 
